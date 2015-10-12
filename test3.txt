@@ -1,0 +1,24 @@
+        // google analytics
+        _gaq.push(['_trackEvent', 'Events' , action, data])
+    });
+
+    $(document).on('AnalyticsEvent', function(e) {
+        action = e.event_type || false
+        data = e.event_name || false
+
+        if (!action || !data)
+          return
+
+        params = {}
+        params['attribute1'] = e.event_value || ""
+
+        if (window.HR && window.HR.current_page)
+          params['attribute2'] = window.HR.current_page
+
+        if (window.HR && window.HR.current_contest)
+          params['attribute3'] = window.HR.current_contest.get('name')
+
+            hr_metrics.track(action, data, params);
+        // google analytics
+        _gaq.push(['_trackEvent', 'Events' , action, data])
+ 

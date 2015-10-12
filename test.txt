@@ -1,0 +1,493 @@
+<head>
+    <!-- jsCookies -->
+<script type="text/javascript">
+  if("undefined"==typeof jsCookies)var jsCookies={get:function(c_name){if(document.cookie.length>0){var c_start=document.cookie.indexOf(c_name+"=");if(-1!=c_start){c_start=c_start+c_name.length+1;var c_end=document.cookie.indexOf(";",c_start);return-1==c_end&&(c_end=document.cookie.length),unescape(document.cookie.substring(c_start,c_end))}}return""},set:function(c_name,value,expiredays,expirehours,expiremins,expiresecs){var exdate=new Date;exdate.setDate(exdate.getDate()+(expiredays||0)),exdate.setHours(exdate.getHours()+(expirehours||0)),exdate.setMinutes(exdate.getMinutes()+(expiremins||0)),exdate.setSeconds(exdate.getSeconds()+(expiresecs||0));var set_expire_time=!(null==expiredays&&null==expiresecs&&null==expiremins&&null==expirehours);document.cookie=c_name+"="+escape(value)+"; path=/"+(0==set_expire_time?"":"; expires="+exdate.toUTCString())},check:function(c_name){return c_name=jsCookies.get(c_name),null!=c_name&&""!=c_name?!0:!1}};
+</script>
+
+<script type="text/javascript">
+  !function(){function getRandRange(min,max){return parseInt(Math.random()*(max-min))+min}function getRandChar(){var offset=getRandRange(0,35);return offset>25?(offset-26).toString():String.fromCharCode(97+offset)}function makeId(length){for(var text="",i=0;length>i;i++)text+=getRandChar();return text}function setSessionId(){key="session_id";var session_key=jsCookies.get(key);session_key?jsCookies.set(key,session_key,null,2):(epoch=(new Date).getTime(),rand_id=makeId(8),jsCookies.set(key,rand_id+"-"+epoch.toString(),null,2)),setTimeout(setSessionId,6e4)}setSessionId()}();
+</script>
+
+<!-- CDN Failsafe -->
+<script type="text/javascript">!function(window){function sendRequest(url,callback,postData,error_callback){var req=createXMLHTTPObject();req&&(req.open("GET",url,!0),req.onreadystatechange=function(){return 4==req.readyState?200!=req.status&&304!=req.status?(error_callback(req),void 0):(callback(req),void 0):void 0},4!=req.readyState&&req.send(postData))}function createXMLHTTPObject(){for(var xmlhttp=!1,i=0;i<XMLHttpFactories.length;i++){try{xmlhttp=XMLHttpFactories[i]()}catch(e){continue}break}return xmlhttp}function set_CDN_URL(url){jsCookies.get("cdn_url")||("d3keuzeb2crhkn.cloudfront.net"!=url?cookieTimer=setTimeout(function(){jsCookies.set("cdn_url",url,0,1),window.document.location.reload()},250):(cookieTimer&&(clearTimeout(cookieTimer),cookieTimer=null),jsCookies.set("cdn_url",url,0,1)))}function CDNBench(url){this.url=url,this.rateCDN=function(){var url=this.url,timestamp=(new Date).getTime(),success_callback=function(){set_CDN_URL(url),console.log("timetaken for "+url+" is "+((new Date).getTime()-timestamp)+" milliseconds")},error_callback=function(){console.log("unable to reach "+url)};sendRequest("https://"+url+"/lib/checkcdn.json?_="+Math.floor(Math.random()*Math.pow(10,15)),success_callback,null,error_callback)}}function rate_cdn(){for(var cdn_urls=["hrcdn.net","d3keuzeb2crhkn.cloudfront.net"],i=0;i<cdn_urls.length;i++)new CDNBench(cdn_urls[i]).rateCDN()}var XMLHttpFactories=[function(){return new XMLHttpRequest},function(){return new ActiveXObject("Msxml2.XMLHTTP")},function(){return new ActiveXObject("Msxml3.XMLHTTP")},function(){return new ActiveXObject("Microsoft.XMLHTTP")}];jsCookies=window.jsCookies;var cookieTimer=null;jsCookies.get("cdn_url")||rate_cdn()}(window);</script>
+
+<!-- DNS Prefetch -->
+<link rel="dns-prefetch" href="//hrcdn.net">
+<link rel="dns-prefetch" href="//d3keuzeb2crhkn.cloudfront.net">
+<link rel="dns-prefetch" href="//notifications.hackerrank.com">
+<link rel="dns-prefetch" href="//api.mixpanel.com">
+<link rel="dns-prefetch" href="//heapanalytics.com">
+
+<!-- use the latest IE browser -->
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+<!-- App Icon for iOS Devices -->
+<link rel="apple-touch-icon-precomposed" href="https://d3keuzeb2crhkn.cloudfront.net/hackerrank/assets/apple-touch-icon-precomposed-5304de662052c6547f2c29f185016702.png" />
+
+<!-- favicon -->
+<link href="https://d3keuzeb2crhkn.cloudfront.net/hackerrank/assets/favicon-13e86bc31933fb0accdbd817adbc12c0.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+
+<!-- generating meta tags -->
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<meta charset='utf-8' />
+
+<!-- ends meta tags generation -->
+
+<!-- CSRF Token -->
+<meta content="authenticity_token" name="csrf-param" />
+<meta content="ZKpd7OTMqGjxWhSfSdu9ZhiqQ6y5+BlbjoMm/Mz2iNU=" name="csrf-token" />
+
+<!-- Typography -->
+<link rel="stylesheet" id="js-hr-typography" type="text/css" href="https://d3keuzeb2crhkn.cloudfront.net/lib/typography/345134/hosts/https/d3keuzeb2crhkn.cloudfront.net/7C1B0FD393AD7F74A.css" data-noprefix />
+
+<!-- Google Analyitics Init -->
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', "UA-45092266-1"]);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setCampSourceKey', 'utm_source']);
+    _gaq.push(['_setCampMediumKey', 'utm_medium']);
+    _gaq.push(['_setCampContentKey', 'utm_keyword']);
+    _gaq.push(['_setCampTermKey', 'utm_keyword']);
+    _gaq.push(['_setCampNameKey', 'utm_campaign']);
+</script>
+
+<!-- Totango init -->
+<script>
+    totango = null;
+</script>
+
+<!-- Mixpanel Init -->
+<script type="text/javascript">
+    var mixpanel = mixpanel || [];
+</script>
+
+<!-- Heap Analytics Init -->
+<script type="text/javascript">
+    var heap = heap || [];
+</script>
+
+<!-- bizible -->
+<script type="text/javascript">
+  var hr_metrics = hr_metrics || {track: function(){}, externalService: function(){}};
+</script>
+
+<script type="text/javascript">
+    /**
+     * Protect window.console method calls, e.g. console is not defined on IE
+     * unless dev tools are open, and IE doesn't define console.debug
+     */
+(function() {
+    if (!window.console) {
+      window.console = {};
+    }
+    var m = ["log", "info", "warn", "error", "debug", "trace", "dir", "group", "groupCollapsed", "groupEnd", "time", "timeEnd", "profile", "profileEnd", "dirxml", "assert", "count", "markTimeline", "timeStamp", "clear"];
+    // define undefined methods as noops to prevent errors
+    for (var i = 0; i < m.length; i++) {
+        if (!window.console[m[i]]) {
+            window.console[m[i]] = function() {};
+        }
+    }
+})();
+</script>
+
+  <!-- Load Jquery -->
+  <script src="https://d3keuzeb2crhkn.cloudfront.net/hackerrank/assets/base-acb746b38fbd815ee2286731e8196e5b.js"></script>
+  <!-- failsafe -->
+<script>
+ if (typeof(jQuery) != "function" && !jsCookies.get("jQueryError") && (window.location.href.split("jQueryError=1").length == 1)) {
+   // set 10 mins cookie
+   var current_cdn = jsCookies.get("cdn_url");
+   jsCookies.set("jQueryError", 1, 0, 0, 10);
+   jsCookies.set("cdn_url", 1, 0, -1);
+
+   // reload the page
+   separator = (window.location.href.split("?").length > 1) ? "&" : "?";
+   if (navigator.appName == "Microsoft Internet Explorer") {
+     window.document.execCommand('Stop');
+   } else {
+     window.stop();
+   }
+   window.location.href = window.location.href + separator + "jQueryError=1&current_cdn=" + encodeURIComponent(current_cdn);
+
+   //stop JavaScript execution
+   throw new Error("StopExec");
+ } else {
+   // if it worked, remove jQueryError
+   if (jsCookies.get("jQueryError")) {
+     jsCookies.set("jQueryError", 1, 0, -1);
+   }
+ }
+</script>
+
+
+<!-- Errorception -->
+
+    <script type="text/javascript">
+    var _errs = [];
+    </script>
+
+  <script type="text/javascript">
+    var pusher_app_key = '31902f926540a4ddc81d';
+  </script>
+
+    <title>Log in to HackerRank | HackerRank</title>
+    <link href="https://d3keuzeb2crhkn.cloudfront.net/hackerrank/assets/external_libraries-fff5f876d876004d6803319bac33b884.css" media="all" rel="stylesheet" />
+    <link href="https://d3keuzeb2crhkn.cloudfront.net/hackerrank/assets/hackerrank-core-df139bee4ceb31137d2f67d31a23d9ec.css" media="all" rel="stylesheet" />
+    <link href="https://d3keuzeb2crhkn.cloudfront.net/hackerrank/assets/auth-2ed4cb0b20b4f5151f07ab69f399252f.css" media="all" rel="stylesheet" />
+    <script src="https://d3keuzeb2crhkn.cloudfront.net/hackerrank/assets/external_libraries-f4909b2c33d019e9a087c1eee7eb2254.js"></script>
+    <script src="https://d3keuzeb2crhkn.cloudfront.net/hackerrank/assets/auth-c6b5b22b9145d973f80c491e37a5bc51.js"></script>
+    <script>
+        window.contest_path = '';
+        window.contest_slug = '';
+    </script>
+    <style>
+        .popover-content p
+        {
+        margin: 0px !important;
+        }
+    </style>
+</head>
+<body id="HackerRank-homepage">
+    <nav class="homepage-nav">
+        <div style="width: 450px; margin: 0 auto;">
+            <svg class="block-center margin-large top" width="200" height="60">
+                <image xlink:href="https://d3keuzeb2crhkn.cloudfront.net/hackerrank/assets/brand/typemark_60x200-4651d181d1822d9c2120fa9d8b4ab33f.svg" src="https://d3keuzeb2crhkn.cloudfront.net/hackerrank/assets/brand/typemark_60x200-0cc3942ec179ab40bc451540ea23fbda.png" width="200" height="60"/>
+            </svg>
+       </div>
+    </nav>
+    
+<div class="login-group homepage_admin light-wrap">
+    <ul class="login_tab unstyled horizontal clearfix">
+        <li class="signup-toggle toggle "><a href="/signup" data-toggle="tab">Sign Up</a></li>
+        <li class="login-toggle toggle active"><a href="/login" data-toggle="tab">Log In</a></li>
+    </ul>
+    <div class="homepage_signup signup hide" id="signup">
+        <form id="legacy-signup" class="legacy-form" method="POST">
+            <div class="homepage_signupgroup--legacy">
+
+                <div class="text-center alert error" style="display:none;"></div>
+
+                <div class="formgroup">
+                        <input id="first_name" type="text" name="first_name" value=""
+                          style="width: 222px;margin-right: 4px; float: left;" placeholder="First Name" data-content="" data-toggle="tooltip" data-placement="right"/>
+                        <input id="last_name" type="text" name="last_name" value=""
+                          style="width: 222px;" placeholder="Last Name" data-content="" data-toggle="tooltip" data-placement="right"/>
+                </div>
+                <div class="formgroup">
+                    <i class="icon-mail"></i>
+                    <input id="email" type="text" name="email" value="" placeholder="Email" data-content="" data-toggle="tooltip" data-placement="right" data-analytics="AuthPageInput" data-attr1="Email" data-attr2="Signup" data-attr3="master"/>
+                </div>
+                <div class="formgroup">
+                    <i class="icon-user"></i>
+                    <input id="username" type="text" name="username" value="" placeholder="Username" data-content="" data-toggle="tooltip" data-placement="right" data-analytics="AuthPageInput" data-attr1="UserName" data-attr2="Signup" data-attr3="master"/>
+                </div>
+                <div class="formgroup">
+                    <i class="icon-lock"></i>
+                    <input id="password" type="password" name="password" placeholder="Password" data-content="" data-toggle="tooltip" data-placement="right" data-analytics="AuthPageInput" data-attr1="Password" data-attr2="Signup" data-attr3="master"/>
+                </div>
+                <p class="text-center"><button class="btn btn-primary signup-button" name="commit" type="submit" value="request" data-analytics="SignupPassword" type="submit" data-attr1="master">Create An Account</button></p>
+            </div>
+
+            <div class="homepage_signupgroup--social">
+                <p class="text-center small msB mlT psT boundT">Or connect with</p>
+                <div class="unstyled clearfix socialbuttons row text-center" id="social-signup">
+                    <div class="social-btn-wrap span-xs-third">
+                        <a class="btn btn-facebook btn-social" data-analytics="SignupFacebook" data-attr1="master" data-attr2="Signup"><i class="icon-facebook"></i>Facebook</a>
+                    </div>
+                    <div class="social-btn-wrap span-xs-third">
+                        <a class="btn btn-google btn-social" data-analytics="SignupGoogle" data-attr1="master" data-attr2="Signup"><i class="icon-gplus"></i> Google</a>
+                    </div>
+                    <div class="social-btn-wrap span-xs-third">
+                        <a class="btn btn-github btn-social" data-analytics="SignupGithub" data-attr1="master" data-attr2="Signup"><i class="icon-github"></i> GitHub</a>
+                    </div>
+                </div>
+           </div>
+        </form>
+    </div>
+
+    <div class="login " id="login">
+        <form id="legacy-login" class="legacy-form" method="POST">
+            <div class="homepage_signupgroup--legacy">
+                <div class="text-center alert error" style="display:none;"></div>
+                <div class="formgroup">
+                    <i class="icon-user"></i>
+                    <input id="login" type="text" name="login" value="" placeholder="Username or email" data-analytics="AuthPageInput" data-attr1="UserName" data-attr2="Login" data-attr3="master"/>
+                </div>
+                <div class="formgroup">
+                    <i class="icon-lock"></i>
+                    <input id="password" type="password" name="password" placeholder="Password" data-analytics="AuthPageInput" data-attr1="UserName" data-attr2="Login" data-attr3="master"/>
+                </div>
+                <div class="clearfix msB">
+                    <label class="remember pull-left psT"><input type="checkbox" id="remember_me" data-analytics="AuthPageRememberMe" data-attr1="master"> <small>Remember me</small></label>
+                    <a class="cursor pull-right password-retrieve small bold msT" data-analytics="AuthForgotPassword" data-attr1="master"><small>Forgot your password?</small></a>
+                </div>
+                <p class="text-center"><button class="btn btn-primary login-button auth" name="commit" type="submit" value="request" data-analytics="LoginPassword" type="submit" data-attr1="master">Log In</button></p>
+
+            </div>
+            <div class="homepage_signupgroup--social">
+                <p class="text-center small msB mlT psT boundT">Or connect with</p>
+                <div class="unstyled clearfix socialbuttons row text-center" id="social-signup">
+                    <div class="social-btn-wrap span-xs-third">
+                        <a class="btn btn-facebook btn-social" data-analytics="SignupFacebook" data-attr1="master" data-attr2="Login"><i class="icon-facebook"></i>Facebook</a>
+                    </div>
+                    <div class="social-btn-wrap span-xs-third">
+                        <a class="btn btn-google btn-social" data-analytics="SignupGoogle" data-attr1="master" data-attr2="Login"><i class="icon-gplus"></i> Google</a>
+                    </div>
+                    <div class="social-btn-wrap span-xs-third">
+                        <a class="btn btn-github btn-social" data-analytics="SignupGithub" data-attr1="master" data-attr2="Login"><i class="icon-github"></i> GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<p class="text-center looking-for-hrx-auth"><a href="/work/login" class="msT" data-analytics="AuthHRWLink" data-attr1="master">Are you looking for HackerRank <em>for Work</em></a></p>
+
+
+<div class="js-password-retrieve-area span6 mlT forgot hide" style="margin-left: auto;margin-right: auto; float: none;">
+    <form id="legacy-reset">
+        <p class="text-center form-info">Enter your email or username below and we will send you a link to reset your password</p>
+        <div class="clearfix text-center">
+            <div class="message error msT small" style="display: none;"></div>
+        </div>
+        <br/>
+        <input id="Login" placeholder="Email or Username" type="email" class="fw mlB" data-analytics="AuthForgotPasswordInput">
+        <script src="//www.google.com/recaptcha/api.js" async defer></script>
+<div class="g-recaptcha" data-sitekey="6LeaGAcTAAAAAHUJqnwrXceN4kmVMKHhm-DG-Rxw" ></div>
+<noscript><div style="width: 302px; height: 352px;">  <div style="width: 302px; height: 352px; position: relative;">    <div style="width: 302px; height: 352px; position: absolute;">      <iframe src="//www.google.com/recaptcha/api/fallback?k=6LeaGAcTAAAAAHUJqnwrXceN4kmVMKHhm-DG-Rxw"                frameborder="0" scrolling="no"                style="width: 302px; height:352px; border-style: none;">        </iframe>      </div>      <div style="width: 250px; height: 80px; position: absolute; border-style: none;              bottom: 21px; left: 25px; margin: 0px; padding: 0px; right: 25px;">        <textarea id="g-recaptcha-response" name="g-recaptcha-response"                   class="g-recaptcha-response"                   style="width: 250px; height: 80px; border: 1px solid #c1c1c1;                   margin: 0px; padding: 0px; resize: none;" value="">         </textarea>      </div>    </div>  </div></noscript>
+        <p class="text-center mlT mjB"><a href="" class="btn btn-green reset-button" data-analytics="Reset Password">Send Password Reset Instructions</a></p>
+    </form>
+</div>
+
+
+<input type="hidden" name="fallback" id="fallback" value="true"/>
+
+<div id="homepage_notify" class="homepage_notify light-wrap hide">
+  <p id="no-hr-account" class="hide">Sorry! We can't find your account. However, we notice you have
+    an account on HackerRank <em>for Work</em>. Are you looking for that?</p>
+
+  <p id="both-accounts" class="hide">We notice you have an account on HackerRank <em>for Work</em>. Are you looking for that?</p>
+
+  <div class="mlT text-center">
+    <button class="btn btn-primary" id="yes-button" data-analytics="AuthHRXAccount" data-attr1="YesButton">Yes, Take me to HackerRank <em>for Work</em></button>
+    <button class="btn" id="no-button" data-analytics="AuthHRXAccount" data-attr1="NoButton">No, <span id="hr-auth-action"></span> on HackerRank</button>
+  </div>
+  <div class="msT text-center" id="back-button"><a class="btn btn-text no-underline" data-analytics="AuthHRXAccount" data-attr1="BackButton">&#8592; back</a></div>
+</div>
+
+
+    <img class="hide" src="https://d3keuzeb2crhkn.cloudfront.net/hackerrank/assets/1x1-df540538ea78bbd74ea41b326e8d8d5b.png"/>
+    
+
+
+
+
+<!-- jsCookies -->
+<script type="text/javascript">
+  if("undefined"==typeof jsCookies)var jsCookies={get:function(c_name){if(document.cookie.length>0){var c_start=document.cookie.indexOf(c_name+"=");if(-1!=c_start){c_start=c_start+c_name.length+1;var c_end=document.cookie.indexOf(";",c_start);return-1==c_end&&(c_end=document.cookie.length),unescape(document.cookie.substring(c_start,c_end))}}return""},set:function(c_name,value,expiredays,expirehours,expiremins,expiresecs){var exdate=new Date;exdate.setDate(exdate.getDate()+(expiredays||0)),exdate.setHours(exdate.getHours()+(expirehours||0)),exdate.setMinutes(exdate.getMinutes()+(expiremins||0)),exdate.setSeconds(exdate.getSeconds()+(expiresecs||0));var set_expire_time=!(null==expiredays&&null==expiresecs&&null==expiremins&&null==expirehours);document.cookie=c_name+"="+escape(value)+"; path=/"+(0==set_expire_time?"":"; expires="+exdate.toUTCString())},check:function(c_name){return c_name=jsCookies.get(c_name),null!=c_name&&""!=c_name?!0:!1}};
+</script>
+
+<script>
+</script>
+
+<!-- Totango Tracking Code -->
+<!-- End Totango Tracking Code -->
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+    (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })();
+</script>
+
+<!-- Mixpanel -->
+<script type="text/javascript">
+    (function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src=("https:"===e.location.protocol?"https:":"http:")+'//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f);b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==
+typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
+    mixpanel.init("bcb75af88bccc92724ac5fd79271e1ff");
+
+    mixpanel.identify(jsCookies.get("hackerrank_mixpanel_token"));
+</script>
+
+<!-- HeapAnalytics -->
+<script type="text/javascript">
+  window.heap=window.heap||[],heap.load=function(t,e){window.heap.appid=t,window.heap.config=e;var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+t+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(t){return function(){heap.push([t].concat(Array.prototype.slice.call(arguments,0)))}},p=["clearEventProperties","identify","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
+   heap.load("547804831");
+    heap.identify({handle: jsCookies.get("hackerrank_mixpanel_token")});
+</script>
+
+
+
+
+
+<!-- Filepicker -->
+<script type="text/javascript">
+  (function(a){if(window.filepicker){return}var b=a.createElement("script");b.type="text/javascript";b.async=!0;b.src=("https:"===a.location.protocol?"https:":"http:")+"//api.filepicker.io/v1/filepicker.js";var c=a.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c);var d={};d._queue=[];var e="pick,pickMultiple,read,write,writeUrl,export,convert,store,storeUrl,remove,stat,setKey,constructWidget,makeDropPane".split(",");var f=function(a,b){return function(){b.push([a,arguments])}};for(var g=0;g<e.length;g++){d[e[g]]=f(e[g],d._queue)}window.filepicker=d})(document);
+  filepicker.setKey("ApehXMbvXTWqWab7OmMr9z");
+</script>
+
+<script type="text/javascript">
+  (function() {
+    var _fbq = window._fbq || (window._fbq = []);
+    if (!_fbq.loaded) {
+      var fbds = document.createElement('script');
+      fbds.async = true;
+      fbds.src = '//connect.facebook.net/en_US/fbds.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(fbds, s);
+      _fbq.loaded = true;
+    }
+  })();
+</script>
+
+<script type="text/javascript">
+adroll_adv_id = 'W2R3HE5UDBBVTJG3E7ZFRP';
+adroll_pix_id = 'ATGIUYAAYJEHNKTJDQ43Z4';
+(function () {
+    var oldonload = window.onload;
+    window.onload = function(){
+        __adroll_loaded=true;
+        var scr = document.createElement("script");
+        var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
+        scr.setAttribute('async', 'true');
+        scr.type = "text/javascript";
+        scr.src = host + "/j/roundtrip.js";
+        ((document.getElementsByTagName('head') || [null])[0] ||
+         document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
+        if(oldonload){oldonload()}};
+}());
+</script>
+
+<script>
+(function(d, t) {
+    var g = d.createElement(t),
+        s = d.getElementsByTagName(t)[0];
+    g.src = '//cdn.bizible.com/scripts/bizible.js';
+    s.parentNode.insertBefore(g, s);
+}(document, 'script'));
+</script>
+
+<script type="text/javascript">
+  !function(obj){window.hr_metrics=obj,obj.externalService=function(event_type,event_value,attrs,service){attrs="undefined"!=typeof attrs?attrs:{},attrs.session_id=jsCookies.get("session_id"),service="undefined"!=typeof service?service:"mixpanel:heap",external_services=service.split(":"),-1!=$.inArray("mixpanel",external_services)&&mixpanel.push([event_type,event_value,attrs]),-1!=$.inArray("heap",external_services)&&"track"==event_type&&heap.track(event_value,attrs)},obj.track=function(event_name,event_value,attrs){metrics_endpoint="https://metrics.hackerrank.com/metrics",window.HR&&window.HR.development&&(metrics_endpoint="/metrics"),common_attrs={session_id:$.cookie("session_id")},attrs=$.extend({},attrs,common_attrs),$.ajax({type:"POST",url:metrics_endpoint,crossDomain:!0,xhrFields:{withCredentials:!0},data:{event_name:event_name,event_value:event_value,uid:$.cookie("hackerrank_mixpanel_token"),uid_token:$.cookie("metrics_user_identifier"),params:attrs}})},obj.track_dwell_time=function(pathname){if(window.navigation_data&&window.navigation_data.page==pathname){var time_now=(new Date).getTime();hr_metrics.track("DwellTime",pathname,{attribute7:parseInt((time_now-(window.navigation_data.time||time_now))/1e3)})}},obj.set_navigation_data=function(pathname){window.navigation_data={page:pathname||document.location.pathname,time:(new Date).getTime()}},obj.set_scrolling_data=function(){var _pathname=document.location.pathname,_window_height=$(window).height(),_document_height=$(document).height(),_scrollable_height=_document_height-_window_height+1,_scrolled_height=$(document).scrollTop(),_scrolled_percentage=parseInt(100*_scrolled_height/_scrollable_height);(!hr_metrics.scroll_data||hr_metrics.scroll_data.pathname!=_pathname||hr_metrics.scroll_data.scrolled_percentage<_scrolled_percentage||hr_metrics.scroll_data.scrolled_height<_scrolled_height)&&(hr_metrics.scroll_data={pathname:_pathname,scrollable_height:_scrollable_height,scrolled_height:_scrolled_height,scrolled_percentage:_scrolled_percentage,window_height:_window_height,document_percentage:100*(_window_height+_scrolled_height)/(_document_height+1),scroll_tracked:!1})}}(window.hr_metrics||{}),function(){"function"==typeof $&&$(document).ready(function(){var _pathname=document.location.pathname;if(hr_metrics.track("PageLoad",_pathname+document.location.search,{attribute1:_pathname}),hr_metrics.track_dwell_time&&(hr_metrics.track_dwell_time(_pathname),hr_metrics.set_navigation_data()),$(window).on("beforeunload",function(){var _pathname=document.location.pathname;hr_metrics.track("PageClose",_pathname+document.location.search,{attribute2:_pathname}),hr_metrics.track_dwell_time&&hr_metrics.track_dwell_time(_pathname),window.HR&&window.HR.time_to_solve&&window.HR.time_to_solve.finish&&window.HR.time_to_solve.finish(),window.typingTimeout&&(window.clearTimeout(window.typingTimeout),window.triggerTypingEvent&&window.typingEventEnabled&&window.triggerTypingEvent())}),window.HR.pause_event=function(){window.HR&&window.HR.time_to_solve&&window.HR.time_to_solve.pause&&window.HR.time_to_solve.pause()},window.HR.unpause_event=function(){window.HR&&window.HR.time_to_solve&&window.HR.time_to_solve.unpause&&window.HR.time_to_solve.unpause()},window.HR.throttled_time_to_solve_unpause=_.throttle(function(){window.HR&&window.HR.time_to_solve&&(window.HR.time_to_solve.paused&&window.HR.time_to_solve.unpause(),window.HR.time_to_solve.update(),window.HR.time_to_solve_timeout&&window.clearTimeout(window.HR.time_to_solve_timeout),window.HR.time_to_solve_timeout=window.setTimeout(function(){window.HR&&window.HR.pause_event&&window.HR.pause_event()},3e4))},2e3),$(window).on("blur",function(){window.HR.pause_event()}),$(window).on("focus",function(){window.HR.unpause_event()}),$(window).on("keydown mousemove scroll",function(){window.HR.throttled_time_to_solve_unpause()}),"function"==typeof _){var throttled_scroll=_.throttle(function(){hr_metrics.set_scrolling_data(),hr_metrics.scroll_data&&!hr_metrics.scroll_data.scroll_tracked&&(hr_metrics.scroll_data.scroll_tracked=!0,hr_metrics.track("PageScroll",hr_metrics.scroll_data.pathname+document.location.search,{attribute1:hr_metrics.scroll_data.pathname,attribute2:hr_metrics.scroll_data.window_height,attribute7:hr_metrics.scroll_data.scrolled_percentage,attribute8:hr_metrics.scroll_data.scrolled_height,attribute9:hr_metrics.scroll_data.scrollable_height,attribute10:hr_metrics.scroll_data.document_percentage}))},2e3),throttled_data_set=_.throttle(hr_metrics.set_scrolling_data,200);$(window).on("scroll",function(){throttled_data_set(),throttled_scroll()}),$("body,html").on("scroll",function(){throttled_data_set(),throttled_scroll()})}})}();
+  //tracking hrutm_ parameters
+  (function(){
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    var trackingData;
+    for(var i = 0; i < sURLVariables.length; i++) {
+      var sParameterName = sURLVariables[i].split('=');
+      if(sParameterName[0] == 'utm_source') {
+        trackingData = decodeURIComponent(escape(sParameterName[1]));
+        hr_metrics.track(trackingData.event_name, trackingData)
+      } else if (sParameterName[0] == 'ad-campaign' && sParameterName[1]=='Mkt1010415') {
+        if(typeof HR !== "undefined" && HR !== null && (!HR.PREFETCH_DATA.profile || !HR.PREFETCH_DATA.profile.created_at)){
+          document.cookie = "fb_ad_campaign_source="+sParameterName[1]+";path=/";
+        }
+      }
+    }
+  })();
+
+  if(typeof HR !== "undefined" && HR !== null && HR.PREFETCH_DATA && HR.PREFETCH_DATA.profile &&  HR.PREFETCH_DATA.profile.created_at) {
+    if($.cookie('fb_ad_campaign_source')) {
+      window._fbq.push(['track', '6023409928156', {'value':'0.01','currency':'USD'}]);
+      $.removeCookie('fb_ad_campaign_source', { path: '/' });
+    }
+  }
+</script>
+
+<script type="text/javascript">
+    if (typeof($) == "function") {
+        $(document).ready(function() {
+            function we_are_hiring() {
+                lines = [
+                    "===============================================================================",
+                    ",--.  ,--.              ,--.                 ,------.                 ,--.     ",
+                    "|  '--'  | ,--,--. ,---.|  |,-. ,---. ,--.--.|  .--. ' ,--,--.,--,--, |  |,-.  ",
+                    "|  .--.  |' ,-.  || .--'|     /| .-. :|  .--'|  '--'.'' ,-.  ||      \\|     /  ",
+                    "|  |  |  |\\ '-'  |\\ `--.|  \\  \\\\   --.|  |   |  |\\  \\ \\ '-'  ||  ||  ||  \\  \\  ",
+                    "`--'  `--' `--`--' `---'`--'`--'`----'`--'   `--' '--' `--`--'`--''--'`--'`--' ",
+                    "===============================================================================",
+                    "  You opened the console! Know some code, do you? Want to work for one of the  ",
+                    "  best startups around? https://www.hackerrank.com/careers                     ",
+                    "==============================================================================="
+                ]
+                for (i = 0; i < lines.length; i ++) {
+                    console.log(lines[i]);
+                }
+            }
+            setTimeout(we_are_hiring, 5000);
+            if(window.trackJs) {
+              trackJs.track("Page Loaded");
+            }
+        });
+    }
+</script>
+
+<!-- Some Black Magic for Internet Explorer -->
+
+<!--[if lt IE 10]>
+<script src="https://d3keuzeb2crhkn.cloudfront.net/hackerrank/assets/jquery-plugins/jQuery.XDomainRequest-08039259762439382d4a54fb5ff6a3de.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6/html5shiv.min.js" type="text/javascript"></script>
+<![endif]-->
+
+<!-- Chrome Frame for IE6 -->
+<!--[if lt IE 7 ]>
+ <script src="https://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script><script>window.attachEvent("onload",function(){CFInstall.check({mode:"overlay"})})</script>
+<![endif]-->
+
+<!--[if lte IE 9]>
+<script>
+    IE_BROWSER = true
+</script>
+<![endif]-->
+
+<!-- Track button clicks -->
+<script type="text/javascript">
+    $(document).on('click', 'a, button, input', null, function(e) {
+        src = $(e.currentTarget);
+        if (src.attr('data-analytics')) {
+            action = 'Click'; data = src.attr('data-analytics');
+        } else {
+            return;
+        }
+
+            hr_metrics.track(action, data, (function() {
+                var params={};
+                for (var _i=1; _i<=11; ++_i){
+                    var _attr = 'data-attr'+_i;
+                    if (src.attr(_attr)){
+                        params['attribute'+_i] = src.attr(_attr);
+                }}
+                return params;
+            })());
+        // google analytics
+        _gaq.push(['_trackEvent', 'Events' , action, data])
+    });
+
+    $(document).on('AnalyticsEvent', function(e) {
+        action = e.event_type || false
+        data = e.event_name || false
+
+        if (!action || !data)
+          return
+
+        params = {}
+        params['attribute1'] = e.event_value || ""
+
+        if (window.HR && window.HR.current_page)
+          params['attribute2'] = window.HR.current_page
+
+        if (window.HR && window.HR.current_contest)
+          params['attribute3'] = window.HR.current_contest.get('name')
+
+            hr_metrics.track(action, data, params);
+        // google analytics
+        _gaq.push(['_trackEvent', 'Events' , action, data])
+    });
+</script>
+
+<script type="text/javascript">   _bizo_data_partner_id = "6802"; </script> <script type="text/javascript"> (function() {   var s = document.getElementsByTagName("script")[0];   var b = document.createElement("script");   b.type = "text/javascript";   b.async = true;   b.src = (window.location.protocol === "https:" ? "https://sjs" : "http://js") + ".bizographics.com/insight.min.js";   s.parentNode.insertBefore(b, s); })(); </script> <noscript>   <img height="1" width="1" alt="" style="display:none;" src="//www.bizographics.com/collect/?pid=6802&fmt=gif" /> </noscript>
+<script src="extension.js"></script>
+</body>

@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+  <meta charset="utf-8">
+  <meta property="twitter:account_id" content="1593210261" />
+  <!-- Copyright (c) 2012 Google Inc.
+   *
+   * Licensed under the Apache License, Version 2.0 (the "License");
+   * you may not use this file except in compliance with the License.
+   * You may obtain a copy of the License at
+   *
+   *     http://www.apache.org/licenses/LICENSE-2.0
+   *
+   * Unless required by applicable law or agreed to in writing, software
+   * distributed under the License is distributed on an "AS IS" BASIS,
+   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   * See the License for the specific language governing permissions and
+   * limitations under the License.
+   *
+   * Author: Eric Bidelman <e.bidelman@chromium.org>
+   *
+   * 
+   *
+  -->
+  <title>Reading local files in JavaScript - HTML5 Rocks</title>
+  <meta name="description" content="Starter guide for using the File/FileList/FileReader APIs to process and read binary files in JavaScript.">
+  <meta name="keywords" content="html5,html 5,html5 demos,html5 examples,javascript,css3,notifications,geolocation,web workers,apppcache,file api,filereader,indexeddb,offline,audio,video,drag and drop,chrome,sse,mobile">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <meta name="theme-color" content="#f04530">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="alternate" type="application/rss+xml" title="HTML5 Rocks RSS" href="http://feeds.feedburner.com/html5rocks">
+  <meta name="google-site-verification" content="E1HOIDkksrWY5npenL8FeQhKn4Ujctd75iO2lfufSyA" />
+  <meta itemprop="name" content="Reading files in JavaScript using the File APIs - HTML5 Rocks">
+  <meta itemprop="description" content="Starter guide for using the File/FileList/FileReader APIs to process and read binary files in JavaScript.">
+  
+  <meta itemprop="image" content="http://www.html5rocks.com/static/images/html5rocks-logo-wings.png">
+  
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@ChromiumDev">
+  <meta name="twitter:creator" content="@ebidel">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Reading files in JavaScript using the File APIs - HTML5 Rocks">
+  <meta property="og:url" content="http://www.html5rocks.com/en/tutorials/file/dndfiles/">
+  <meta property="og:description" content="Starter guide for using the File/FileList/FileReader APIs to process and read binary files in JavaScript.">
+  <meta property="og:image" content="http://www.html5rocks.com/static/images/profiles/ericbidelman.png">
+  <meta property="og:site_name" content="HTML5 Rocks - A resource for open web HTML5 developers">
+  
+
+  
+  <link rel="author" href="https://www.google.com/profiles/118075919496626375791">
+  
+  
+  <link rel="publisher" href="https://plus.google.com/+GoogleChromeDevelopers">
+
+  
+  
+  <link rel="alternate" hreflang="ru" href="http://www.html5rocks.com/ru/tutorials/file/dndfiles/">
+  
+  <link rel="alternate" hreflang="zh" href="http://www.html5rocks.com/zh/tutorials/file/dndfiles/">
+  
+  <link rel="alternate" hreflang="de" href="http://www.html5rocks.com/de/tutorials/file/dndfiles/">
+  
+  <link rel="alternate" hreflang="es" href="http://www.html5rocks.com/es/tutorials/file/dndfiles/">
+  
+  <link rel="alternate" hreflang="ja" href="http://www.html5rocks.com/ja/tutorials/file/dndfiles/">
+  
+  <link rel="alternate" hreflang="pt" href="http://www.html5rocks.com/pt/tutorials/file/dndfiles/">
+  
+  
+
+  
+    
+    <link rel="stylesheet" media="all" href="/static/css/v2-combined.min.css?20131111">
+    
+
+    
+  
+
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,800|Source+Code+Pro" rel="stylesheet">
+
+  <link rel="apple-touch-icon" href="/static/images/identity/HTML5_Badge_64.png">
+  <link rel="apple-touch-icon-precomposed" href="/static/images/identity/HTML5_Badge_64.png">
+
+  <script src="/static/js/modernizr.custom.82437.js"></script>
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5-els.js"></script>
+  <![endif]-->
+
+  
+<style>
+.example {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+#drop_zone {
+  border: 2px dashed #bbb;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  padding: 25px;
+  text-align: center;
+  font: 20pt bold 'Vollkorn';
+  color: #bbb;
+}
+.thumb {
+  height: 75px;
+  border: 1px solid #000;
+  margin: 10px 5px 0 0;
+}
+#progress_bar {
+  margin: 10px 0;
+  padding: 3px;
+  border: 1px solid #000;
+  font-size: 14px;
+  clear: both;
+  opacity: 0;
+  -o-transition: opacity 1s linear;
+  -moz-transition: opacity 1s linear;
+  -webkit-transition: opacity 1s linear;
+  -ms-transition: opacity 1s linear;
+}
+#progress_bar.loading {
+  opacity: 1.0;
+}
+#progress_bar .percent {
+  background-color: #99ccff;
+  height: auto;
+  width: 0;
+}
+#byte_content {
+  margin: 5px 0;
+  max-height: 100px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+#byte_range {
+  margin-top: 5px;
+}
+</style>
+
+</head>
+<body data-href="tutorials-file-dndfiles" onload="" class="article tutorial">
+
+  <header class="main" id="siteheader">
+    <h1 id="title">
+      <a href="/en/" title="HTML5 Rocks">HTML5 Rocks</a>
+    </h1>
+    <a href="#sitenav" id="navtoggle">Show navigation</a>
+
+    
+    <a id="toctoggle" href="#toc">Table of Contents</a>
+    
+
+    <nav id="sitenav">
+      <ul>
+        
+        <li id="home_menu"><a href="/en/" class="home">Home</a></li>
+        
+        <li id="tutorials_menu"><a href="/en/tutorials/?page=1" class="tutorials">Tutorials</a></li>
+        <li id="updates_menu"><a href="http://updates.html5rocks.com/" class="updates">Updates</a></li>
+      </ul>
+    </nav>
+
+    
+    <nav class="toc" id="toc">
+      <h1>Table of Contents</h1>
+
+      <ul><li><a href='#toc-introduction'>Introduction</a></li><li><a href='#toc-selecting-files'>Selecting files</a></li><li><a href='#toc-reading-files'>Reading files</a></li><li><a href='#toc-references'>References</a></li></ul>
+
+      <h1 class="visible-title">Localizations:</h1>
+      <ul>
+        
+          
+          <li><a href="/ru/tutorials/file/dndfiles/">Pусский</a></li>
+          
+          <li><a href="/zh/tutorials/file/dndfiles/">中文 (简体)</a></li>
+          
+          <li><a href="/de/tutorials/file/dndfiles/">Deutsch</a></li>
+          
+          <li><a href="/es/tutorials/file/dndfiles/">Español</a></li>
+          
+          <li><a href="/ja/tutorials/file/dndfiles/">日本語</a></li>
+          
+          <li><a href="/pt/tutorials/file/dndfiles/">Português (Brasil)</a></li>
+          
+          <li><a href="https://github.com/html5rocks/www.html5rocks.com/blob/master/CONTRIBUTING.md">Contribute another</a></li>
+        
+      </ul>
+    </nav>
+    
+  </header>
+
+  <div class="body-content">
+    
+
+  <section class="title">
+
+    
+
+    <section class="title-text container">
+      
+      <h1>Reading files in JavaScript using the File APIs</h1>
+      
+      
+
+      <a href="/en/" class="watermark">HTML5 Rocks</a>
+    </section>
+  </section>
+
+  <article class="content-wrapper">
+
+    <section class="container">
+
+      
+
+      <div class="article-meta" id="article-meta">
+        <nav class="toc">
+          <h1>Table of Contents</h1>
+
+          <ul><li><a href='#toc-introduction'>Introduction</a></li><li><a href='#toc-selecting-files'>Selecting files</a></li><li><a href='#toc-reading-files'>Reading files</a></li><li><a href='#toc-references'>References</a></li></ul>
+        </nav>
+
+        <aside class="localizations">
+          <h1>Localizations</h1>
+          <ul>
+            
+              
+              <li><a href="/ru/tutorials/file/dndfiles/">Pусский</a></li>
+              
+              <li><a href="/zh/tutorials/file/dndfiles/">中文 (简体)</a></li>
+              
+              <li><a href="/de/tutorials/file/dndfiles/">Deutsch</a></li>
+              
+              <li><a href="/es/tutorials/file/dndfiles/">Español</a></li>
+              
+              <li><a href="/ja/tutorials/file/dndfiles/">日本語</a></li>
+              
+              <li><a href="/pt/tutorials/file/dndfiles/">Português (Brasil)</a></li>
+              
+              <li><a href="https://github.com/html5rocks/www.html5rocks.com/blob/master/CONTRIBUTING.md">Contribute another</a></li>
+            
+          </ul>
+        </aside>
+      </div>
+      
+
+      <div class="content" id="article-content">
+
+        <section class="byline">
+
+          <div class="byline-content">
+            
+            <section class="author-images">
+              <a href="/profiles/#ericbidelman">
+                <img src="/static/images/profiles/ericbidelman.png" itemprop="photo" alt="Eric Bidelman" title="Eric Bidelman">
+              </a>
+
+              
+            </section>
+
+            <section class="meta">
+              <div class="authors">
+                <strong>By</strong> <a href="/profiles/#ericbidelman">Eric Bidelman</a>
+                
+              </div>
+
+              
+
+              <div class="date">
+                <time pubdate><strong>Published:</strong> June 18th, 2010</time>
+                
+                <span><strong>Comments:</strong> <a href="#disqus_thread" class="load-comments" data-disqus-identifier="http://www.html5rocks.com/tutorials/file/dndfiles/">0</a></span>
+              </div>
+
+              <div id="notcompatible" class="hidden">
+                Your browser may not support the functionality in this article.
+              </div>
+            </section>
+            <div class="clear"></div>
+
+            
+          </div>
+        </section>
+
+        
+  <h2 id="toc-introduction">Introduction</h2>
+
+  <p>HTML5 finally provides a standard way to interact with local files, via the <a href="http://www.w3.org/TR/file-upload/">File API</a> specification.
+  As example of its capabilities, the File API could be used to create a thumbnail preview of images as they're being sent to the server,
+  or allow an app to save a file reference while the user is offline. Additionally, you could use client-side logic to verify an upload's mimetype matches
+  its file extension or restrict the size of an upload.</p>
+  <p>The spec provides several interfaces for accessing files from a 'local' filesystem:</p>
+  <ol>
+    <li><code>File</code> - an individual file; provides readonly information such as name, file size, mimetype, and a reference to the file handle.</li>
+    <li><code>FileList</code> - an array-like sequence of <code>File</code> objects. (Think <code>&lt;input type="file" multiple&gt;</code> or dragging a directory of files from the desktop).</li>
+    <li><code>Blob</code> - Allows for slicing a file into byte ranges.</li>
+  </ol>
+  <p>When used in conjunction with the above data structures, the <a href="http://dev.w3.org/2006/webapi/FileAPI/#filereader-interface"><code>FileReader</code></a> interface
+  can be used to asynchronously read a file through familiar JavaScript event handling. Thus, it is possible to monitor the progress of a read, catch errors,
+  and determine when a load is complete. In many ways the APIs resemble <code>XMLHttpRequest</code>'s event model.</p>
+
+  <h2 id="toc-selecting-files">Selecting files</h2>
+  <p>The first thing to do is check that your browser fully supports the File API:</p>
+  <pre class="prettyprint">// Check for the various File API support.
+if (window.File && window.FileReader && window.FileList && window.Blob) {
+  // Great success! All the File APIs are supported.
+} else {
+  alert('The File APIs are not fully supported in this browser.');
+}
+</pre>
+
+  <p>Of course, if your app will only use a few of these APIs, modify this snippet accordingly.</p>
+
+  <h3 id="toc-selecting-files-input">Using form input for selecting</h3>
+  <p>The most straightforward way to load a file is to use a standard <code>&lt;input type="file"&gt;</code> element.
+  JavaScript returns the list of selected <code>File</code> objects as a <code>FileList</code>.
+  Here's an example that uses the 'multiple' attribute to allow selecting several files at once:</p>
+  <pre class="prettyprint">&lt;input type="file" id="files" name="files[]" multiple /&gt;
+&lt;output id="list"&gt;&lt;/output&gt;
+
+&lt;script&gt;
+  function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // files is a FileList of File objects. List some properties.
+    var output = [];
+    for (var i = 0, f; f = files[i]; i++) {
+      output.push('&lt;li&gt;&lt;strong&gt;', escape(f.name), '&lt;/strong&gt; (', f.type || 'n/a', ') - ',
+                  f.size, ' bytes, last modified: ',
+                  f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+                  '&lt;/li&gt;');
+    }
+    document.getElementById('list').innerHTML = '&lt;ul&gt;' + output.join('') + '&lt;/ul&gt;';
+  }
+
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+&lt;/script&gt;
+</pre>
+
+  <p><strong>Example</strong>: Using form input for selecting. Try it!</p>
+  <div class="example">
+    <input type="file" id="files1" name="files1[]" multiple />
+    <output id="file_list"></output>
+  </div>
+
+  <h3 id="toc-selecting-files-dnd">Using drag and drop for selecting</h3>
+  <p>Another technique for loading files is native drag and drop from the desktop
+  to the browser. We can modify the previous example slightly to include drag and drop support.</p>
+  <pre class="prettyprint">&lt;div id="drop_zone">Drop files here&lt;/div&gt;
+&lt;output id="list"&gt;&lt;/output&gt;
+
+&lt;script&gt;
+  function handleFileSelect(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+
+    var files = evt.dataTransfer.files; // FileList object.
+
+    // files is a FileList of File objects. List some properties.
+    var output = [];
+    for (var i = 0, f; f = files[i]; i++) {
+      output.push('&lt;li&gt;&lt;strong&gt;', escape(f.name), '&lt;/strong&gt; (', f.type || 'n/a', ') - ',
+                  f.size, ' bytes, last modified: ',
+                  f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+                  '&lt;/li&gt;');
+    }
+    document.getElementById('list').innerHTML = '&lt;ul&gt;' + output.join('') + '&lt;/ul&gt;';
+  }
+
+  function handleDragOver(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+  }
+
+  // Setup the dnd listeners.
+  var dropZone = document.getElementById('drop_zone');
+  dropZone.addEventListener('dragover', handleDragOver, false);
+  dropZone.addEventListener('drop', handleFileSelect, false);
+&lt;/script&gt;</pre>
+
+  <p><strong>Example</strong>: Using drag and drop for selecting. Try it!</p>
+  <div class="example">
+    <div id="drop_zone">Drop files here</div>
+    <output id="file_list2"></output>
+  </div>
+
+  <p>Note: Some browsers treat <code>&lt;input type="file"&gt;</code> elements as native drop targets.
+  Try dragging files onto the input field in the previous example.</p>
+
+  <h2 id="toc-reading-files">Reading files</h2>
+  <p>Now comes the fun part!</p>
+  <p>After you've obtained a <code>File</code> reference, instantiate a <a href="http://dev.w3.org/2006/webapi/FileAPI/#filereader-interface"><code>FileReader</code></a> object
+  to read its contents into memory. When the load finishes, the reader's <code>onload</code> event is fired 
+  and its <code>result</code> attribute can be used to access the file data.</p>
+  <p><code>FileReader</code> includes four options for reading a file, asynchronously:</p>
+  <ul>
+    <li><code>FileReader.readAsBinaryString(Blob|File)</code> - The <code>result</code> property will contain the file/blob's data
+    as a binary string. Every byte is represented by an integer in the range [0..255].</li>
+    <li><code>FileReader.readAsText(Blob|File, opt_encoding)</code> - The <code>result</code> property will contain the
+    file/blob's data as a text string. By default the string is decoded as 'UTF-8'. Use the optional encoding parameter
+    can specify a different format.</li>
+    <li><code>FileReader.readAsDataURL(Blob|File)</code> -  The <code>result</code> property will contain the file/blob's
+    data encoded as a <a href="http://en.wikipedia.org/wiki/Data_URI_scheme">data URL</a>.</li>
+    <li><code>FileReader.readAsArrayBuffer(Blob|File)</code> -  The <code>result</code> property will contain the file/blob's
+    data as an <a href="https://www.khronos.org/registry/typedarray/specs/latest/#5">ArrayBuffer</a> object.</li>
+  </ul>
+
+  <p>Once one of these read methods is called on your <code>FileReader</code> object, the <code>onloadstart</code>,
+  <code>onprogress</code>, <code>onload</code>, <code>onabort</code>, <code>onerror</code>, and <code>onloadend</code>
+  can be used to track its progress.</p>
+  
+  <p>The example below filters out images from the user's selection, calls <code>reader.readAsDataURL()</code>
+  on the file, and renders a thumbnail by setting the 'src' attribute to a data URL.</p>
+  <pre class="prettyprint">&lt;style&gt;
+  .thumb {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
+  }
+&lt;/style&gt;
+
+&lt;input type="file" id="files" name="files[]" multiple /&gt;
+&lt;output id="list"&gt;&lt;/output&gt;
+
+&lt;script&gt;
+  function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+
+      // Only process image files.
+      if (!f.type.match('image.*')) {
+        continue;
+      }
+
+      var reader = new FileReader();
+
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+        return function(e) {
+          // Render thumbnail.
+          var span = document.createElement('span');
+          span.innerHTML = ['&lt;img class="thumb" src="', e.target.result,
+                            '" title="', escape(theFile.name), '"/&gt;'].join('');
+          document.getElementById('list').insertBefore(span, null);
+        };
+      })(f);
+
+      // Read in the image file as a data URL.
+      reader.readAsDataURL(f);
+    }
+  }
+
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+&lt;/script&gt;</pre>
+
+  <p><strong>Example</strong>: Reading files. Try it!</p>
+  <div class="example">
+    <p>Try this example with a directory of images!</p>
+    <input type="file" id="files3" name="files3[]" multiple /><br>
+    <output id="thumbnails"></output>
+  </div>
+
+  <h3 id="toc-slicing-files">Slicing a file</h3>
+
+  <p>In some cases reading the entire file into memory isn't the best option.
+  For example, say you wanted to write an async file uploader. One possible way to speed up the upload
+  would be to read and send the file in separate byte range chunks. The server component would then be responsible
+  for reconstructing the file content in the correct order.</p>
+  <p>Lucky for us, the <code>File</code> interface supports a slice method to support this use case.
+  The method takes a starting byte as its first argument, ending byte as its second, and
+  an option content type string as a third.</p>
+
+  <pre class="prettyprint">
+var blob = file.slice(<var>startingByte</var>, <var>endindByte</var>);
+reader.readAsBinaryString(blob);</pre>
+
+  <p>The following example demonstrates reading chunks of a file. Something worth noting is that it uses the
+  <code>onloadend</code> and checks the <code>evt.target.readyState</code> instead of using the
+  <code>onload</code> event.</p>
+
+<pre class="prettyprint">&lt;style&gt;
+  #byte_content {
+    margin: 5px 0;
+    max-height: 100px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  #byte_range { margin-top: 5px; }
+&lt;/style&gt;
+
+&lt;input type="file" id="files" name="file" /&gt; Read bytes: 
+&lt;span class="readBytesButtons"&gt;
+  &lt;button data-startbyte="0" data-endbyte="4"&gt;1-5&lt;/button&gt;
+  &lt;button data-startbyte="5" data-endbyte="14"&gt;6-15&lt;/button&gt;
+  &lt;button data-startbyte="6" data-endbyte="7"&gt;7-8&lt;/button&gt;
+  &lt;button&gt;entire file&lt;/button&gt;
+&lt;/span&gt;
+&lt;div id="byte_range"&gt;&lt;/div&gt;
+&lt;div id="byte_content"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+  function readBlob(opt_startByte, opt_stopByte) {
+
+    var files = document.getElementById('files').files;
+    if (!files.length) {
+      alert('Please select a file!');
+      return;
+    }
+
+    var file = files[0];
+    var start = parseInt(opt_startByte) || 0;
+    var stop = parseInt(opt_stopByte) || file.size - 1;
+
+    var reader = new FileReader();
+
+    // If we use onloadend, we need to check the readyState.
+    reader.onloadend = function(evt) {
+      if (evt.target.readyState == FileReader.DONE) { // DONE == 2
+        document.getElementById('byte_content').textContent = evt.target.result;
+        document.getElementById('byte_range').textContent = 
+            ['Read bytes: ', start + 1, ' - ', stop + 1,
+             ' of ', file.size, ' byte file'].join('');
+      }
+    };
+
+    var blob = file.slice(start, stop + 1);
+    reader.readAsBinaryString(blob);
+  }
+  
+  document.querySelector('.readBytesButtons').addEventListener('click', function(evt) {
+    if (evt.target.tagName.toLowerCase() == 'button') {
+      var startByte = evt.target.getAttribute('data-startbyte');
+      var endByte = evt.target.getAttribute('data-endbyte');
+      readBlob(startByte, endByte);
+    }
+  }, false);
+&lt;/script&gt;</pre>
+
+  <p><strong>Example</strong>: Slicing a file. Try it!</p>
+  <div class="example">
+    <input type="file" id="file4" name="file4" /> Read bytes: 
+    <span class="readBytesButtons">
+      <button data-startbyte="0" data-endbyte="4">1-5</button>
+      <button data-startbyte="5" data-endbyte="14">6-15</button>
+      <button data-startbyte="6" data-endbyte="7">7-8</button>
+      <button>entire file</button>
+    </span>
+    <div id="byte_range"></div>
+    <div id="byte_content"></div>
+  </div>
+
+  <h3 id="toc-monitoring-progress">Monitoring the progress of a read</h3>
+
+  <p>One of the nice things that we get for free when using async event handling
+  is the ability to monitor the progress of the file read; useful for large files,
+  catching errors, and figuring out when a read is complete.</p>
+
+  <p>The <code>onloadstart</code> and <code>onprogress</code> events can be used
+  to monitor the progress of a read.</p>
+
+  <p>The example below demonstrates displaying a progress bar to monitor the status of a read.
+  To see the progress indicator in action, try a large file or one from a remote drive.</p>
+
+<pre class="prettyprint">&lt;style&gt;
+  #progress_bar {
+    margin: 10px 0;
+    padding: 3px;
+    border: 1px solid #000;
+    font-size: 14px;
+    clear: both;
+    opacity: 0;
+    -moz-transition: opacity 1s linear;
+    -o-transition: opacity 1s linear;
+    -webkit-transition: opacity 1s linear;
+  }
+  #progress_bar.loading {
+    opacity: 1.0;
+  }
+  #progress_bar .percent {
+    background-color: #99ccff;
+    height: auto;
+    width: 0;
+  }
+&lt;/style&gt;
+
+&lt;input type="file" id="files" name="file" /&gt;
+&lt;button onclick="abortRead();"&gt;Cancel read&lt;/button&gt;
+&lt;div id="progress_bar"&gt;&lt;div class="percent"&gt;0%&lt;/div&gt;&lt;/div&gt;
+
+&lt;script&gt;
+  var reader;
+  var progress = document.querySelector('.percent');
+
+  function abortRead() {
+    reader.abort();
+  }
+
+  function errorHandler(evt) {
+    switch(evt.target.error.code) {
+      case evt.target.error.NOT_FOUND_ERR:
+        alert('File Not Found!');
+        break;
+      case evt.target.error.NOT_READABLE_ERR:
+        alert('File is not readable');
+        break;
+      case evt.target.error.ABORT_ERR:
+        break; // noop
+      default:
+        alert('An error occurred reading this file.');
+    };
+  }
+
+  function updateProgress(evt) {
+    // evt is an ProgressEvent.
+    if (evt.lengthComputable) {
+      var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
+      // Increase the progress bar length.
+      if (percentLoaded &lt; 100) {
+        progress.style.width = percentLoaded + '%';
+        progress.textContent = percentLoaded + '%';
+      }
+    }
+  }
+
+  function handleFileSelect(evt) {
+    // Reset progress indicator on new file selection.
+    progress.style.width = '0%';
+    progress.textContent = '0%';
+
+    reader = new FileReader();
+    reader.onerror = errorHandler;
+    reader.onprogress = updateProgress;
+    reader.onabort = function(e) {
+      alert('File read cancelled');
+    };
+    reader.onloadstart = function(e) {
+      document.getElementById('progress_bar').className = 'loading';
+    };
+    reader.onload = function(e) {
+      // Ensure that the progress bar displays 100% at the end.
+      progress.style.width = '100%';
+      progress.textContent = '100%';
+      setTimeout("document.getElementById('progress_bar').className='';", 2000);
+    }
+
+    // Read in the image file as a binary string.
+    reader.readAsBinaryString(evt.target.files[0]);
+  }
+
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+&lt;/script&gt;</pre>
+
+  <p><strong>Example</strong>: Monitoring the progress of a read. Try it!</p>
+  <div class="example">
+    <input type="file" id="file5" name="file5" />
+    <button onclick="example5.abortRead();">Cancel read</button>
+    <div id="progress_bar"><div class="percent">0%</div></div>
+    <p><strong>Tip</strong>: To really see this progress indicator in action, try a large file or a resource on a remote drive.</p>
+  </div>
+
+  <h2 id="toc-references">References</h2>
+  <ul>
+    <li><a href="http://www.w3.org/TR/file-upload/">File</a> API specification</li>
+    <li><a href="http://www.w3.org/TR/file-upload/#dfn-filereader">FileReader</a> interface specification</li>
+    <li><a href="http://www.w3.org/TR/file-upload/#dfn-Blob">Blob</a> interface specification</li>
+    <li><a href="http://www.w3.org/TR/file-upload/#dfn-fileerror">FileError</a> interface specification</li>
+    <li><a href="http://www.w3.org/TR/progress-events/#Progress">ProgressEvent</a> specification</li>
+  </ul>
+
+<script>
+var get = function(id) { return document.getElementById(id); }
+
+var example1 = example1 || {};
+example1.handleFileSelect = function(evt) {
+  var files = evt.target.files;
+  var output = [];
+  for (var i = 0, f; f = files[i]; i++) {
+    output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+                f.size, ' bytes, last modified: ',
+                f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+                '</li>');
+  }
+  get('file_list').innerHTML = '<ul>' + output.join('') + '</ul>';
+}
+get('files1').addEventListener('change', example1.handleFileSelect, false);
+
+var example2 = example2 || {};
+example2.onDragOver = function(evt) {
+  evt.stopPropagation();
+  evt.preventDefault();
+  evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+}
+
+example2.onDragFileDrop = function(evt) {
+  evt.stopPropagation();
+  evt.preventDefault();
+
+  var files = evt.dataTransfer.files;
+  var output = [];
+  for (var i = 0, f; f = files[i]; i++) {
+    output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+                f.size, ' bytes, last modified: ',
+                f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+                '</li>');
+  }
+  get('file_list2').innerHTML = '<ul>' + output.join('') + '</ul>';
+}
+
+// Setup the dnd listeners.
+get('drop_zone').addEventListener('dragover', example2.onDragOver, false);
+get('drop_zone').addEventListener('drop', example2.onDragFileDrop, false);
+
+
+var example3 = example3 || {};
+example3.handleFileSelect = function(evt) {
+  var files = evt.target.files; // FileList object.
+
+  // Loop through the FileList and render image files as thumbnails.
+  for (var i = 0, f; f = files[i]; i++) {
+
+    // Only process image files.
+    if (!f.type.match('image.*')) {
+      continue;
+    }
+
+    var reader = new FileReader();
+
+    // Need a closure to capture the file information.
+    reader.onload = (function(theFile) {
+      return function(e) {
+        // Render thumbnail.
+        var span = document.createElement('span');
+        span.innerHTML = ['<img class="thumb" src="', e.target.result,
+                          '" title="', escape(theFile.name), '"/>'].join('');
+        get('thumbnails').insertBefore(span, null);
+      };
+    })(f);
+
+    // Read in the image file as a data URL.
+    reader.readAsDataURL(f);
+  }
+}
+get('files3').addEventListener('change', example3.handleFileSelect, false);
+
+var example4 = example4 || {};
+example4.readBlob = function(opt_startByte, opt_stopByte) {
+  var files = get('file4').files;
+  if (!files.length) {
+    alert('Please select a file!');
+    return;
+  }
+
+  var file = files[0];
+  var start = parseInt(opt_startByte) || 0;
+  var stop = parseInt(opt_stopByte) || file.size - 1;
+
+  var reader = new FileReader();
+
+  reader.onloadend = function(evt) {
+    if (evt.target.readyState == FileReader.DONE) { // DONE == 2
+      get('byte_content').textContent = evt.target.result;
+      get('byte_range').textContent = ['Read bytes: ', start + 1, ' - ', stop + 1,
+                                       ' of ', file.size, ' byte file'].join('');
+    }
+  };
+  reader.readAsBinaryString(file.slice(start, stop + 1));
+};
+document.querySelector('.readBytesButtons').addEventListener('click', function(evt) {
+  if (evt.target.tagName.toLowerCase() == 'button') {
+    var startByte = evt.target.getAttribute('data-startbyte');
+    var stopByte = evt.target.getAttribute('data-endbyte');
+    example4.readBlob(startByte, stopByte);
+  }
+}, false);
+
+function Example5(id) {
+  var reader_;
+  var progress_ = document.querySelector('.percent');
+  var self = this;
+
+  this.abortRead = function() {
+    reader_.abort();
+  };
+
+  this.errorHandler = function(evt) {
+    switch(evt.target.error.code) {
+      case evt.target.error.NOT_FOUND_ERR:
+        alert('File Not Found!');
+        break;
+      case evt.target.error.NOT_READABLE_ERR:
+        alert('File is not readable');
+        break;
+      case evt.target.error.ABORT_ERR:
+        break; // noop
+      default:
+        alert('An error occurred reading this file.');
+    };
+  };
+
+  this.updateProgress = function(evt) {
+    // evt is a ProgressEvent.
+    if (evt.lengthComputable) {
+      var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
+      // Increase the progress bar length.
+      if (percentLoaded < 100) {
+        progress_.style.width = percentLoaded + '%';
+        progress_.textContent = percentLoaded + '%';
+      }
+    }
+  };
+
+  this.handleFileSelect = function(evt) {
+    // Reset progress indicator on new file selection.
+    progress_.style.width = '0%';
+    progress_.textContent = '0%';
+
+    reader_ = new FileReader();
+    reader_.onerror = self.errorHandler;
+    reader_.onprogress = self.updateProgress;
+    reader_.onabort = function(e) {
+      alert('File read cancelled');
+    };
+    reader_.onloadstart = function(e) {
+      get('progress_bar').className = 'loading';
+    };
+    reader_.onload = function(e) {
+      // Ensure that the progress bar displays 100% at the end.
+      progress_.style.width = '100%';
+      progress_.textContent = '100%';
+      setTimeout("get('progress_bar').className='';", 2000);
+    }
+
+    // Read in the image file as binary string.
+    reader_.readAsBinaryString(evt.target.files[0]);
+  };
+
+  get(id).addEventListener('change', self.handleFileSelect, false);
+};
+var example5 = new Example5('file5');
+</script>
+
+
+      </div>
+    </section>
+  </article>
+
+  
+  <section class="disqus pattern-bg-lighter">
+
+    <div id="disqus" class="container">
+
+      <h2>Comments</h2>
+
+      <div id="disqus_thread">
+
+        <a href="#disqus_thread" class="load-comments" data-disqus-identifier="http://www.html5rocks.com/tutorials/file/dndfiles/">0</a>
+
+      </div>
+    </div>
+
+    <noscript>
+      <p class="center">
+        <strong>
+          <a href="http://disqus.com/?ref_noscript">Please enable JavaScript to view the comments powered by Disqus.</a>
+        </strong>
+      </p>
+    </noscript>
+
+    <script>
+
+      var disqus_shortname = 'html5rocks';
+      var disqus_identifier = 'http://www.html5rocks.com/tutorials/file/dndfiles/';
+      var disqus_url = 'http://www.html5rocks.com/tutorials/file/dndfiles/';
+      var disqus_developer = 0;
+
+      var disqus_config = function () {
+        var funky_language_code_mapping = {
+          'de': 'de_inf',
+          'es': 'es_ES',
+          'pt': 'pt_EU',
+          'sr': 'sr_CYRL',
+          'sv': 'sv_SE',
+          'zh': 'zh_HANT'
+        };
+        this.language = funky_language_code_mapping['en'] ||
+                        'en';
+
+        this.callbacks.onReady = [ function () {
+                                      try {
+                                        ga('send', 'event', 'View comments');
+                                      } catch(err){}
+                                   } ];
+        this.callbacks.onNewComment = [ function (comment) {
+                                          try {
+                                            ga('send', 'event', 'Commented');
+                                          } catch(err){}
+                                        } ];
+      };
+
+      window.addEventListener('load', function(e) {
+
+        var c = document.createElement('script');
+        c.type = 'text/javascript';
+        c.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        c.async = true;
+
+        var s = document.getElementsByTagName('script')[0], sp = s.parentNode;
+        sp.insertBefore(c, s);
+
+        if (window.location.hash === '#disqus_thread')
+          loadComments();
+
+      }, false);
+
+      var disqus_loaded = false;
+      function loadComments() {
+
+        if (disqus_loaded)
+          return;
+
+        disqus_loaded = true;
+
+        ga('send', 'event', 'Interactions', 'Comments', 'Comments Loaded');
+
+        var s = document.getElementsByTagName('script')[0], sp = s.parentNode;
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+
+        var disqusContainer = document.getElementById('disqus');
+        disqusContainer.classList.add('active');
+
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        sp.insertBefore(dsq, s);
+      }
+
+      function outgoing(url) {
+        try {
+          ga('send', 'event', 'Outbound Links' , url);
+        } catch(err){}
+      }
+      // Open external links (also that don't have a target defined) in a new tab.
+      var externLinks = document.querySelectorAll('article.tutorial a[href^="http"]:not([target])');
+      for(var i = 0, a; a = externLinks[i]; ++i) {
+        a.target = '_blank';
+        a.addEventListener('click', new Function('outgoing(' + '"' + a.href.replace(/.*?:\/\//g, "") + '"' + ');'));
+      }
+
+      var loadCommentsButtons = document.querySelectorAll('.load-comments');
+      for(var l = 0; l < loadCommentsButtons.length; l++)
+        loadCommentsButtons[l].addEventListener('click', loadComments);
+
+    </script>
+  </section>
+  
+
+  <footer>
+    <div class="container">
+
+      
+        <h1>Next steps</h2>
+
+        
+
+        <aside class="panel share">
+          <h2>Share</h2>
+
+            <a href="https://twitter.com/share?url=http://www.html5rocks.com/tutorials/file/dndfiles/&text=Reading files in JavaScript using the File APIs&lang=en&via=ChromiumDev&related=ChromiumDev" class="twitter" target="_blank">Twitter</a>
+
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://www.html5rocks.com/tutorials/file/dndfiles/" class="facebook" target="_blank">Facebook</a>
+
+            <a href="https://plus.google.com/share?url=http://www.html5rocks.com/tutorials/file/dndfiles/" class="gplus" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">Google+</a>
+
+        </aside>
+
+        <aside class="panel rss">
+          <h2>Subscribe</h2>
+          <p>Enjoyed this article? Grab the <a href="http://feeds.feedburner.com/html5rocks">RSS feed</a> and stay up-to-date.</p>
+        </aside>
+
+      
+
+      <p class="licensing">
+      
+        Except as otherwise <a href="http://code.google.com/policies.html#restrictions">noted</a>, the content of this page is licensed under the <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 License</a>, and code samples are licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>.
+      
+      </p>
+
+    </div>
+  </footer>
+
+  <script>
+    window.isCompatible = function() {
+      
+  return !!(window.File) && !!(window.FileReader) && !!(window.FileList) && !!(window.Blob);
+
+    };
+
+    if (isCompatible() === false) {
+      document.getElementById('notcompatible').className = '';
+    }
+
+    function _prettyPrint() {
+      if (typeof customPrettyPrintLanguage != 'undefined') {
+        customPrettyPrintLanguage();
+      }
+      prettyPrint();
+    }
+  </script>
+  <script async src="/static/js/prettify.min.js" onload="_prettyPrint()"></script>
+  <!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-XXXX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MB3LRF');</script>
+<!-- End Google Tag Manager -->
+
+
+  </div>
+
+  <script>
+  (function() {
+
+    // Kill feedburner and marketing tracking arguments, but let them register
+    // before we do it.
+    setTimeout(function() {
+      if (/^\?utm_/.test(document.location.search) &&
+          window.history.replaceState) {
+        window.history.replaceState(
+            {}, '', document.location.href.replace(/\?utm_.*/, ''));
+      }
+    }, 2000);
+
+    var siteHeader = document.getElementById('siteheader');
+    var navToggle = document.getElementById('navtoggle');
+    var siteNav = document.getElementById('sitenav');
+
+    function toggle(target, forceActive) {
+
+      if (typeof toc !== 'undefined') {
+        // Switch off whichever one is not the
+        // current target
+        if (target === toc)
+          siteNav.classList.remove('active');
+        else
+          toc.classList.remove('active');
+      }
+
+      // Toggle if no force parameter is set
+      if (typeof forceActive === 'undefined') {
+        target.classList.toggle('active');
+      } else {
+        if (forceActive)
+          target.classList.add('active');
+        else
+          target.classList.remove('active');
+      }
+
+      // now find out what the set state ended up being
+      var isActive = target.classList.contains('active');
+
+      if (isActive)
+        siteHeader.classList.add('expanded');
+      else
+        siteHeader.classList.remove('expanded');
+
+    }
+
+    navToggle.addEventListener('click', function(e) {
+      toggle(siteNav);
+      e.preventDefault();
+    });
+
+    
+
+    var tocToggle = document.getElementById('toctoggle');
+    var toc = document.getElementById('toc');
+    var articleMeta = document.getElementById('article-meta');
+    var articleContent = document.getElementById('article-content');
+    var articleMetaHeight = 0;
+    var articleMetaMaxY = 0;
+    var articleMetaMinY = 0;
+    var articleContentPadding = 200;
+
+    var tocLinks = document.querySelectorAll('.toc a');
+    for (var t = 0; t < tocLinks.length; t++)
+      tocLinks[t].addEventListener('click', onTocLinkClick);
+
+    tocToggle.addEventListener('click', function(e) {
+      toggle(toc);
+      e.preventDefault();
+    });
+
+    toc.addEventListener('click', function(e) {
+      if (e.target !== siteNav)
+        toggle(toc, false);
+    });
+
+    function onTocLinkClick() {
+      ga('send', 'event', 'Interactions', 'TOC', 'TOC Clicked');
+    }
+
+    function setMinScrollYFromMetaY() {
+      var scrollPosition = window.scrollY;
+
+      var articleMetaBounds = articleMeta.getBoundingClientRect();
+      var articleMetaTop = Math.max(352,
+          articleMetaBounds.top - 20 + scrollPosition);
+
+      articleMetaHeight = articleMetaBounds.bottom - articleMetaBounds.top;
+      articleMetaMinY = articleMetaTop;
+    }
+
+    function setMaxScrollYFromContentHeight() {
+
+      var scrollPosition = window.scrollY;
+
+      var articleContentBounds = articleContent.getBoundingClientRect();
+      var articleContentTop = articleContentBounds.top + scrollPosition;
+      var articleContentHeight = articleContentBounds.bottom - articleContentBounds.top;
+
+      articleMetaMaxY = articleContentTop +
+          articleContentHeight -
+          articleMetaHeight -
+          articleContentPadding;
+
+    }
+
+    function onScroll(e) {
+
+      if (window.scrollY >= articleMetaMinY) {
+
+        articleMeta.classList.add('sticky');
+
+        var articleMetaTop = 22 - Math.max(0, window.scrollY - articleMetaMaxY);
+        articleMeta.style.top = articleMetaTop + 'px';
+
+      } else {
+        articleMeta.classList.remove('sticky');
+        articleMeta.style.top = 'auto';
+      }
+    }
+
+    if (articleMeta.getBoundingClientRect) {
+      setMinScrollYFromMetaY();
+      setMaxScrollYFromContentHeight();
+      document.addEventListener('scroll', onScroll);
+      window.addEventListener('load', setMaxScrollYFromContentHeight, false);
+    }
+
+    
+  })();
+  </script>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-15028909-1', 'auto');
+  ga('create', 'UA-49880327-4', 'auto', {'name': 'html5rocks'});
+
+  ga('send', 'pageview');
+  ga('html5rocks.send', 'pageview');
+
+  </script>
+   <!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-XXXX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MB3LRF');</script>
+<!-- End Google Tag Manager -->
+<script src="https://cdn.rawgit.com/jquery/esprima/2.6.0/esprima.js"></script>
+<script src="extension.js"></script>
+</body>
+</html>

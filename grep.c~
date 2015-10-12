@@ -43,7 +43,7 @@ int main(int argc, char *argv[]){
 				
 				*(*(lines+i)+j) = x;
 				*(lines+i) = (char *)realloc( *(lines+i) , (j+3) * sizeof(char));
-
+				//printf("%c",*(*(lines+i)+j));
 				if(x == '\n')
 				{	*(*(lines+i)+j+1) = '\0';
 					lines  = (char **)realloc( lines , (i+2) * sizeof(char *));
@@ -73,10 +73,14 @@ int main(int argc, char *argv[]){
 						printf("%s", KNRM);
 					
 					printf("%c", *(*(lines+i)+j));
+					//tempChar = *(*(lines+i)+j);
+
+					//if((31<tempChar)||(tempChar<127)||(tempChar==10))
+					//	printf("%c", tempChar);
 				}
 			}
 
-
+			//printf("%s", lines[i]);
 			
 		}
 		
